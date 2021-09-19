@@ -5,7 +5,7 @@ class Wemowatch < Formula
     branch: "master",
     :using => :git
 
-  version "v1.0.2"
+  version "v1.0.3"
 
   depends_on "go" => :build
 
