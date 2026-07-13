@@ -54,9 +54,50 @@ Tests: [`.github/scripts/test_bump_formulae.py`](.github/scripts/test_bump_formu
 3. Add `# autobump: scallister/<repo>` if releases should auto-bump
 4. Set `tag:` and `version` to the current release tag
 5. **Update [README.md](README.md)** — add the tool to the Tools table with a brief public-facing description and link to the upstream repo
-6. PR and merge — no changes needed in the upstream tool repo
+6. **Test the formula** — see [Testing formulae](#testing-formulae) below
+7. PR and merge — no changes needed in the upstream tool repo
 
 When a tool is removed, remove its formula and its README entry in the same PR.
+
+## Testing formulae
+
+Before opening a PR for a new or changed formula, verify it installs and runs. Do not rely on the Python autobump tests alone — they do not exercise `install` or upstream tags.
+
+**Prerequisites**
+
+- Homebrew installed (`brew --version` works)
+- The upstream repo has the `tag:` referenced in the formula (check with `git ls-remote --tags https://github.com/owner/repo.git`)
+
+**Local tap install (Linux / cloud agents)**
+
+Clone the tap to a separate directory so `brew tap` does not hit git hardlink errors when the working copy is already a git repo:
+
+```bash
+git clone --no-hardlinks /path/to/homebrew-scallister /tmp/homebrew-scallister-tap
+brew tap scallister/scallister /tmp/homebrew-scallister-tap
+brew trust scallister/scallister
+brew install <formula>
+```
+
+On macOS with a normal checkout, `brew tap scallister/scallister /path/to/homebrew-scallister` is usually enough.
+
+**Verify the install**
+
+```bash
+brew test <formula>          # if the formula has a test do block
+<installed-command> --help   # or another non-destructive smoke check
+```
+
+For tools that need a tmux session or other interactive setup, use the lightest check that confirms the binary is on `PATH` and executes (for example, a `help` subcommand).
+
+**Optional checks**
+
+```bash
+brew audit --strict scallister/scallister/<formula>
+python3 -m unittest discover -s .github/scripts -p "test_*.py"
+```
+
+`brew audit` may flag style differences this tap intentionally keeps (for example `version "v1.0.0"` with a leading `v`, or `:using => :git` hash syntax). Match existing formulae in `Formula/` rather than changing tap-wide conventions to satisfy audit.
 
 ## Releasing
 

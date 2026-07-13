@@ -13,4 +13,8 @@ class ClusterMux < Formula
   def install
     bin.install "cluster-mux"
   end
+
+  test do
+    assert_match "Usage:", shell_output("#{bin}/cluster-mux help")
+  end
 end
