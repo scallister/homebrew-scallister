@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
+"""Bump Homebrew formulae from upstream GitHub release tags.
 
+Scans Formula/*.rb for a top-of-file autobump marker:
+
+    # autobump: owner/repo
+
+When a newer v* tag exists on GitHub, updates the formula version line and
+git tag ref in the url block. Network access is only used to list tags.
+
+Usage:
+    python3 bump-formulae.py
+    python3 bump-formulae.py --dry-run
+    python3 -m unittest discover -s .github/scripts -p "test_*.py"
+"""
 import json
 import os
 import re

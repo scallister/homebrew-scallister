@@ -36,7 +36,8 @@ end
 ## Autobump
 
 Daily workflow: [`.github/workflows/bump-formulae.yml`](.github/workflows/bump-formulae.yml)  
-Script: [`.github/scripts/bump-formulae.py`](.github/scripts/bump-formulae.py)
+Script: [`.github/scripts/bump-formulae.py`](.github/scripts/bump-formulae.py)  
+Tests: [`.github/scripts/test_bump_formulae.py`](.github/scripts/test_bump_formulae.py) (run via **Test Scripts** workflow or `python3 -m unittest discover -s .github/scripts -p "test_*.py"`)
 
 - Formulae opt in with `# autobump: owner/repo` before the `class` line
 - Workflow runs daily at 06:00 UTC and on `workflow_dispatch`
