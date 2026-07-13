@@ -36,7 +36,7 @@ end
 ## Autobump
 
 Daily workflow: [`.github/workflows/bump-formulae.yml`](.github/workflows/bump-formulae.yml)  
-Script: [`.github/scripts/bump-formulae.rb`](.github/scripts/bump-formulae.rb)
+Script: [`.github/scripts/bump-formulae.py`](.github/scripts/bump-formulae.py)
 
 - Formulae opt in with `# autobump: owner/repo` before the `class` line
 - Workflow runs daily at 06:00 UTC and on `workflow_dispatch`

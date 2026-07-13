@@ -19,7 +19,7 @@ jobs:
       - name: Bump formulae
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ruby .github/scripts/bump-formulae.rb
+        run: python3 .github/scripts/bump-formulae.py
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
