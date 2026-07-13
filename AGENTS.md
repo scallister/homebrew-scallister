@@ -4,7 +4,7 @@ Context for AI agents working in this repository.
 
 ## What this is
 
-A personal Homebrew tap (`brew tap scallister/scallister`). Formulae live in `Formula/*.rb`. User-facing docs are in [README.md](README.md).
+A personal Homebrew tap (`brew tap scallister/scallister`). Formulae live in `Formula/*.rb`. [README.md](README.md) is **public-facing** — install instructions and a tools list only. Maintainer and agent workflows belong here in AGENTS.md.
 
 ## Formula conventions
 
@@ -53,7 +53,10 @@ Tests: [`.github/scripts/test_bump_formulae.py`](.github/scripts/test_bump_formu
 2. Adapt metadata and `install` for the tool type
 3. Add `# autobump: scallister/<repo>` if releases should auto-bump
 4. Set `tag:` and `version` to the current release tag
-5. PR and merge — no changes needed in the upstream tool repo
+5. **Update [README.md](README.md)** — add the tool to the Tools table with a brief public-facing description and link to the upstream repo
+6. PR and merge — no changes needed in the upstream tool repo
+
+When a tool is removed, remove its formula and its README entry in the same PR.
 
 ## Releasing
 
@@ -65,3 +68,4 @@ Upstream repos push `v*` tags. This tap picks them up on the next daily run (or 
 - Do not convert git-based formulae to tarballs
 - Do not add cross-repo workflows or secrets to tool repos for bumping
 - Keep autobump logic in this repo only
+- Keep [README.md](README.md) in sync with `Formula/` — update the Tools table when adding or removing a formula; do not put maintainer instructions in README
