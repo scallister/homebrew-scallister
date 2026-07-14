@@ -43,7 +43,7 @@ Tests: [`.github/scripts/test_bump_formulae.py`](.github/scripts/test_bump_formu
 - Workflow runs daily at 06:00 UTC and on `workflow_dispatch`
 - Checks upstream GitHub repos for latest `v*` semver tag
 - Updates **only** `version` and `tag:` — never `install`, `depends_on`, `desc`, etc.
-- Opens a PR when changes are needed; no setup in tool repos
+- Commits and pushes bumps directly to `main`; no setup in tool repos
 
 **Do not** manually bump `version` / `tag:` for autobump formulae unless fixing a mistake — let the workflow handle releases.
 
