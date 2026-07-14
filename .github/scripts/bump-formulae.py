@@ -24,8 +24,8 @@ from pathlib import Path
 FORMULA_DIR = Path(__file__).resolve().parents[2] / "Formula"
 AUTOBUMP_PATTERN = re.compile(r"#\s*autobump:\s*([^\s#]+)", re.IGNORECASE)
 VERSION_PATTERN = re.compile(r'^\s*version\s+"([^"]+)"', re.MULTILINE)
-TAG_PATTERN = re.compile(r'^\s*tag:\s*"([^"]+)"', re.MULTILINE)
-BRANCH_PATTERN = re.compile(r'^\s*branch:\s*"([^"]+)"', re.MULTILINE)
+TAG_PATTERN = re.compile(r'^(\s*)tag:\s*"[^"]+",?', re.MULTILINE)
+BRANCH_PATTERN = re.compile(r'^(\s*)branch:\s*"[^"]+",?', re.MULTILINE)
 RELEASE_TAG_PATTERN = re.compile(r"^v\d", re.IGNORECASE)
 
 
@@ -123,9 +123,9 @@ def bump_formula_contents(contents: str, new_tag: str) -> str:
     updated = VERSION_PATTERN.sub(f'  version "{new_tag}"', contents, count=1)
 
     if TAG_PATTERN.search(updated):
-        updated = TAG_PATTERN.sub(f'    tag: "{new_tag}",', updated, count=1)
+        updated = TAG_PATTERN.sub(rf'\1tag: "{new_tag}",', updated, count=1)
     elif BRANCH_PATTERN.search(updated):
-        updated = BRANCH_PATTERN.sub(f'    tag: "{new_tag}",', updated, count=1)
+        updated = BRANCH_PATTERN.sub(rf'\1tag: "{new_tag}",', updated, count=1)
     else:
         raise SystemExit("Formula is missing tag: or branch: in url block")
 
