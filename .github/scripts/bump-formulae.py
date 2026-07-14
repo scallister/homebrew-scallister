@@ -23,9 +23,9 @@ from pathlib import Path
 
 FORMULA_DIR = Path(__file__).resolve().parents[2] / "Formula"
 AUTOBUMP_PATTERN = re.compile(r"#\s*autobump:\s*([^\s#]+)", re.IGNORECASE)
-VERSION_PATTERN = re.compile(r'^\s*version\s+"([^"]+)"', re.MULTILINE)
-TAG_PATTERN = re.compile(r'^(\s*)tag:\s*"[^"]+",?', re.MULTILINE)
-BRANCH_PATTERN = re.compile(r'^(\s*)branch:\s*"[^"]+",?', re.MULTILINE)
+VERSION_PATTERN = re.compile(r'^([ \t]*)version[ \t]+"([^"]+)"', re.MULTILINE)
+TAG_PATTERN = re.compile(r'^([ \t]*)tag:[ \t]*"[^"]+",?', re.MULTILINE)
+BRANCH_PATTERN = re.compile(r'^([ \t]*)branch:[ \t]*"[^"]+",?', re.MULTILINE)
 RELEASE_TAG_PATTERN = re.compile(r"^v\d", re.IGNORECASE)
 
 
@@ -108,7 +108,7 @@ def parse_autobump_repo(contents: str) -> tuple[str, str] | None:
 
 def current_version(contents: str) -> str | None:
     match = VERSION_PATTERN.search(contents)
-    return match.group(1) if match else None
+    return match.group(2) if match else None
 
 
 def version_outdated(current: str, latest: str) -> bool:
@@ -120,7 +120,7 @@ def version_outdated(current: str, latest: str) -> bool:
 
 
 def bump_formula_contents(contents: str, new_tag: str) -> str:
-    updated = VERSION_PATTERN.sub(f'  version "{new_tag}"', contents, count=1)
+    updated = VERSION_PATTERN.sub(rf'\1version "{new_tag}"', contents, count=1)
 
     if TAG_PATTERN.search(updated):
         updated = TAG_PATTERN.sub(rf'\1tag: "{new_tag}",', updated, count=1)
