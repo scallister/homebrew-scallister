@@ -70,14 +70,18 @@ class TestBumpFormulae(unittest.TestCase):
     def test_bump_formula_contents_updates_tag(self):
         updated = bump.bump_formula_contents(SAMPLE_FORMULA, "v1.2.3")
         self.assertIn('version "v1.2.3"', updated)
-        self.assertIn('tag: "v1.2.3",', updated)
+        self.assertRegex(updated, r'(?m)^    tag: "v1\.2\.3",$')
+        self.assertNotIn(",,", updated)
         self.assertNotIn("v1.0.0", updated)
+        self.assertIn(":using => :git\n\n  version", updated)
 
     def test_bump_formula_contents_converts_branch_to_tag(self):
         updated = bump.bump_formula_contents(BRANCH_FORMULA, "v2.0.0")
-        self.assertIn('tag: "v2.0.0",', updated)
+        self.assertRegex(updated, r'(?m)^    tag: "v2\.0\.0",$')
+        self.assertNotIn(",,", updated)
         self.assertNotIn("branch:", updated)
         self.assertIn('version "v2.0.0"', updated)
+        self.assertIn(":using => :git\n\n  version", updated)
 
 
 if __name__ == "__main__":
